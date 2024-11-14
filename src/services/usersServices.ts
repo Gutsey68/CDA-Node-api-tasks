@@ -25,7 +25,12 @@ const deleteUser = async (userId: number) => {
 };
 
 const getUserById = async (userId: number) => {
-  usersRepository.findById(userId);
+  const user = await usersRepository.findById(userId);
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+  return user;
 };
 
 const updateUser = async (userId: number, newPassword: string) => {
