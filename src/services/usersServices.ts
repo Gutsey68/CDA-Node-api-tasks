@@ -15,7 +15,13 @@ const createUser = async (username: string, email: string, password: string, rol
 };
 
 const deleteUser = async (userId: number) => {
-  usersRepository.deleted(userId);
+  const deletedUser = await usersRepository.findById(userId);
+
+  if (!deletedUser) {
+    throw new Error('User not found');
+  }
+
+  return await usersRepository.deleted(userId);
 };
 
 const getUserById = async (userId: number) => {
