@@ -28,8 +28,14 @@ const getUserById = async (userId: number) => {
   usersRepository.findById(userId);
 };
 
-const updateUser = async (userId: number, newName: string) => {
-  usersRepository.update(userId, newName);
+const updateUser = async (userId: number, newPassword: string) => {
+  const updatedUser = await usersRepository.findById(userId);
+
+  if (!updatedUser) {
+    throw new Error('User not found');
+  }
+
+  usersRepository.update(userId, newPassword);
 };
 
 export const usersServices = { getlAllUsers, createUser, deleteUser, getUserById, updateUser };

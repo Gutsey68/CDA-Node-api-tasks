@@ -23,8 +23,8 @@ const findById = async (userId: number) => {
   return result.rows[0];
 };
 
-const update = async (userId: number, newUsername: string) => {
-  const result = await db('UPDATE users SET username = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *', [newUsername, userId]);
+const update = async (userId: number, newPassword: string) => {
+  const result = await db('UPDATE users SET password = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *', [newPassword, userId]);
   return result.rows[0];
 };
 

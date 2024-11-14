@@ -42,12 +42,12 @@ const getUserById = async (req: Request, res: Response) => {
 
 const updateUser = async (req: Request, res: Response) => {
   const userId = Number(req.params.id);
-  const { name } = req.body;
+  const { password } = req.body;
   try {
-    usersServices.updateUser(userId, name);
-    res.status(200).json({ message: 'User updated successfully' });
-  } catch (error) {
-    res.status(500).json({ message: error });
+    const user = await usersServices.updateUser(userId, password);
+    res.status(200).json({ message: 'User updated successfully', data: user });
+  } catch (error: any) {
+    res.status(404).json({ message: error.message });
   }
 };
 
