@@ -1,0 +1,49 @@
+CREATE TABLE Users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Projects (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    description VARCHAR(200),
+    due_date DATE,
+    owner_id INT NOT NULL REFERENCES Users(id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE ProjectMembers (
+    id SERIAL PRIMARY KEY,
+    project_id INT NOT NULL REFERENCES Projects(id) ON DELETE CASCADE,
+    user_id INT NOT NULL REFERENCES Users(id) ON DELETE CASCADE,
+    role VARCHAR(20) NOT NULL,
+    UNIQUE(project_id, user_id)
+);
+
+CREATE TABLE Tasks (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(50) NOT NULL,
+    description VARCHAR(200),
+    status INT NOT NULL,
+    priority INT NOT NULL,
+    due_date DATE,
+    project_id INT NOT NULL REFERENCES Projects(id) ON DELETE CASCADE,
+    assigned_user_id INT REFERENCES Users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Comments (
+    id SERIAL PRIMARY KEY,
+    content VARCHAR(200) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    task_id INT NOT NULL REFERENCES Tasks(id) ON DELETE CASCADE,
+    user_id INT NOT NULL REFERENCES Users(id) ON DELETE CASCADE
+);
